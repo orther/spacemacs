@@ -61,12 +61,15 @@
   (use-package golden-ratio
     :defer t
     :init
-    (spacemacs|add-toggle golden-ratio
-      :status golden-ratio-mode
-      :on (golden-ratio-mode) (golden-ratio)
-      :off (golden-ratio-mode -1) (balance-windows)
-      :documentation "Resize the focused window using the golden ratio."
-      :evil-leader "tg")
+    (progn
+      (setq spacemacs-window-manipulation-transient-state-add-bindings
+            '(("g" spacemacs/toggle-golden-ratio)))
+      (spacemacs|add-toggle golden-ratio
+        :status golden-ratio-mode
+        :on (golden-ratio-mode) (golden-ratio)
+        :off (golden-ratio-mode -1) (balance-windows)
+        :documentation "Resize the focused window using the golden ratio."
+        :evil-leader "tg"))
     :config
     (progn
       ;; golden-ratio-exclude-modes
@@ -181,10 +184,10 @@
 Navigation^^^^             Actions^^         Visual actions/config^^^
 ───────^^^^─────────────── ───────^^──────── ───────^^^────────────────
 [_L_]   next sibling^^     [_c_] create      [_TAB_] shrink/enlarge
-[_H_]   previous sibling^^ [_d_] delete      [_|_]   vertical split
-[_J_]   goto child^^       [_r_] rename      [_-_]   horizonatal split
-[_K_]   goto parent^^      [_R_] change root [_gr_]  refresh^
-[_l_]   open/expand^^      ^^                [_s_]   hidden:^^^ %s(if neo-buffer--show-hidden-file-p \"on\" \"off\")
+[_H_]   previous sibling^^ [_C_] copy        [_|_]   vertical split
+[_J_]   goto child^^       [_d_] delete      [_-_]   horizonatal split
+[_K_]   goto parent^^      [_r_] rename      [_gr_]  refresh^
+[_l_]   open/expand^^      [_R_] change root [_s_]   hidden:^^^ %s(if neo-buffer--show-hidden-file-p \"on\" \"off\")
 [_h_]   up/collapse^^      ^^                ^^^
 [_j_]   line down^^        ^^                ^^^
 [_k_]   line up^^          ^^                ^^
@@ -197,6 +200,7 @@ Navigation^^^^             Actions^^         Visual actions/config^^^
         ("-" neotree-enter-horizontal-split)
         ("?" nil :exit t)
         ("c" neotree-create-node)
+        ("C" neotree-copy-node)
         ("d" neotree-delete-node)
         ("gr" neotree-refresh)
         ("h" spacemacs/neotree-collapse-or-up)
@@ -221,6 +225,7 @@ Navigation^^^^             Actions^^         Visual actions/config^^^
           (kbd "|") 'neotree-enter-vertical-split
           (kbd "-") 'neotree-enter-horizontal-split
           (kbd "c") 'neotree-create-node
+          (kbd "C") 'neotree-copy-node
           (kbd "d") 'neotree-delete-node
           (kbd "gr") 'neotree-refresh
           (kbd "h") 'spacemacs/neotree-collapse-or-up

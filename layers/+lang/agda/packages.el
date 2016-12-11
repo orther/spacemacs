@@ -11,7 +11,12 @@
 
 (setq agda-packages
       '((agda :location local)
+        company
         golden-ratio))
+
+(defun agda/post-init-company ()
+  (spacemacs|add-company-hook agda2-mode)
+  (push 'company-capf company-backends-agda2-mode))
 
 (defun agda/init-agda ()
   (if (and (eq 'use-helper agda-mode-path)
@@ -78,7 +83,7 @@
           "xq"  'agda2-quit
           "xr"  'agda2-restart)))))
 
-(defun idris/pre-init-golden-ratio ()
+(defun agda/pre-init-golden-ratio ()
   (spacemacs|use-package-add-hook golden-ratio
     :post-config
     (add-to-list 'golden-ratio-exclude-buffer-names

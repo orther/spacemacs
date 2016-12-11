@@ -108,7 +108,7 @@
           (lambda (c)
             (let ((counsel--git-grep-dir default-directory))
               (counsel-git-grep-action c)))
-          next-error-function 'spacemacs//gne-next)))
+          next-error-function 'spacemacs/gne-next)))
 
 (defvar spacemacs--counsel-map
   (let ((map (make-sparse-keymap)))
@@ -165,6 +165,7 @@ that directory."
 ;; Define search functions for each tool
 (cl-loop
    for (tools tool-name) in '((dotspacemacs-search-tools "auto")
+                              ((list "rg") "rg")
                               ((list "ag") "ag")
                               ((list "pt") "pt")
                               ((list "ack") "ack")

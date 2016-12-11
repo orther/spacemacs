@@ -12,6 +12,7 @@
 (setq ivy-packages
       '(
         auto-highlight-symbol
+        bookmark
         counsel
         (counsel-projectile :toggle (configuration-layer/package-usedp 'projectile))
         evil
@@ -76,10 +77,6 @@
         "saF" 'spacemacs/search-ag-region-or-symbol
         "sap" 'spacemacs/search-project-ag
         "saP" 'spacemacs/search-project-ag-region-or-symbol
-        "stf" 'spacemacs/search-pt
-        "stF" 'spacemacs/search-pt-region-or-symbol
-        "stp" 'spacemacs/search-project-pt
-        "stP" 'spacemacs/search-project-pt-region-or-symbol
         "sgf" 'spacemacs/search-grep
         "sgF" 'spacemacs/search-grep-region-or-symbol
         "sgp" 'counsel-git-grep
@@ -87,7 +84,15 @@
         "skf" 'spacemacs/search-ack
         "skF" 'spacemacs/search-ack-region-or-symbol
         "skp" 'spacemacs/search-project-ack
-        "skP" 'spacemacs/search-project-ack-region-or-symbol)
+        "skP" 'spacemacs/search-project-ack-region-or-symbol
+        "srf" 'spacemacs/search-rg
+        "srF" 'spacemacs/search-rg-region-or-symbol
+        "srp" 'spacemacs/search-project-rg
+        "srP" 'spacemacs/search-project-rg-region-or-symbol
+        "stf" 'spacemacs/search-pt
+        "stF" 'spacemacs/search-pt-region-or-symbol
+        "stp" 'spacemacs/search-project-pt
+        "stP" 'spacemacs/search-project-pt-region-or-symbol)
 
       ;; set additional ivy actions
       (ivy-set-actions
@@ -175,15 +180,26 @@
   (use-package ivy-hydra))
 
 (defun ivy/post-init-persp-mode ()
+  ;; based on https://gist.github.com/Bad-ptr/1aca1ec54c3bdb2ee80996eb2b68ad2d#file-persp-ivy-el
+  (add-hook 'ivy-ignore-buffers #'spacemacs//layout-not-contains-buffer-p)
+  (setq ivy-sort-functions-alist
+        (append ivy-sort-functions-alist
+                '((persp-kill-buffer . nil)
+                  (persp-remove-buffer . nil)
+                  (persp-add-buffer . nil)
+                  (persp-switch . nil)
+                  (persp-window-switch . nil)
+                  (persp-frame-switch . nil))))
+
   (ivy-set-actions
    'spacemacs/ivy-spacemacs-layouts
    '(("c" persp-kill-without-buffers "Close layout(s)")
      ("k" persp-kill  "Kill layout(s)")))
   (setq spacemacs-layouts-transient-state-remove-bindings
-        '("b" "l" "C" "X"))
+        '("C" "X"))
   (setq spacemacs-layouts-transient-state-add-bindings
-        '(("b" spacemacs/ivy-spacemacs-layout-buffer)
-          ("l" spacemacs/ivy-spacemacs-layouts)
+        '(("b" spacemacs/ivy-spacemacs-layout-buffer :exit t)
+          ("l" spacemacs/ivy-spacemacs-layouts :exit t)
           ("C" spacemacs/ivy-spacemacs-layout-close-other :exit t)
           ("X" spacemacs/ivy-spacemacs-layout-kill-other :exit t))))
 
@@ -191,6 +207,9 @@
   (setq projectile-completion-system 'ivy)
   (spacemacs/set-leader-keys
     "pv"  'projectile-vc))
+
+(defun ivy/post-init-bookmark ()
+  (spacemacs/set-leader-keys "fb" 'counsel-bookmark))
 
 (defun ivy/init-smex ()
   (use-package smex

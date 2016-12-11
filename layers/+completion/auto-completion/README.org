@@ -81,10 +81,10 @@ you don't use it already.
 
 ** Snippets directories
 The following directories are added by default:
-- ~/.emacs.d/elpa/yasnippet-xxxxx/snippets
-- ~/.emacs.d/layers/auto-completion/snippets
-- ~/.emacs.d/private/snippets (conditional to the value of =auto-completion-private-snippets-directory=)
-- ~/.spacemacs.d/snippets (conditional to the existence of =~/.spacemacs.d= directory)
+- =~/.emacs.d/elpa/yasnippet-xxxxx/snippets=
+- =~/.emacs.d/layers/auto-completion/snippets=
+- =~/.emacs.d/private/snippets= (conditional to the value of =auto-completion-private-snippets-directory=)
+- =~/.spacemacs.d/snippets= (conditional to the existence of =~/.spacemacs.d= directory)
 
 You can provide additional directories by setting the variable
 =auto-completion-private-snippets-directory= which can take a string in case of
@@ -142,7 +142,7 @@ for a given mode.
 You may want to enable company globally to get auto-completion
 everywhere even in the modes which are not configured by Spacemacs. To do
 so, you just have to add =(global-company-mode)= in the
-=dotspacemacs/user -config= function of your dotfile.
+=dotspacemacs/user-config= function of your dotfile.
 
 Note that if you want to enable =auto-complete= globally you will have to
 disable =company= first, see the next section to do so.
