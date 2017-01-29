@@ -1,6 +1,6 @@
 ;;; core-dotspacemacs.el --- Spacemacs Core File
 ;;
-;; Copyright (c) 2012-2016 Sylvain Benner & Contributors
+;; Copyright (c) 2012-2017 Sylvain Benner & Contributors
 ;;
 ;; Author: Sylvain Benner <sylvain.benner@gmail.com>
 ;; URL: https://github.com/syl20bnr/spacemacs
@@ -99,6 +99,10 @@ a layer lazily.")
 wrapped in a layer. If you need some configuration for these
 packages then consider to create a layer, you can also put the
 configuration in `dotspacemacs/user-config'.")
+
+(defvar dotspacemacs--additional-packages '()
+  "Same as `dotspacemacs-additonal-packages' but reserved for Spacemacs
+internals.")
 
 (defvar dotspacemacs-editing-style 'vim
   "One of `vim', `emacs' or `hybrid'.
@@ -500,6 +504,14 @@ a display strng and the value is the actual value to return."
   (let ((ido-max-window-height (1+ (length candidates))))
     (cadr (assoc (ido-completing-read prompt (mapcar 'car candidates))
                  candidates))))
+
+(defun dotspacemacs/maybe-install-dotfile ()
+  "Install the dotfile if it does not exist."
+  (unless (file-exists-p dotspacemacs-filepath)
+    (spacemacs-buffer/set-mode-line "Dotfile wizard installer")
+    (spacemacs//redisplay)
+    (when (dotspacemacs/install 'with-wizard)
+      (configuration-layer/sync))))
 
 (defun dotspacemacs/install (arg)
   "Install the dotfile, return non nil if the doftile has been installed.
