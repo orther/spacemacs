@@ -104,8 +104,7 @@ the final step of executing code in `emacs-startup-hook'.")
                                     dotspacemacs-editing-style))
   (configuration-layer/initialize)
   ;; theme
-  (spacemacs/load-theme (car dotspacemacs-themes)
-                             spacemacs--fallback-theme)
+  (spacemacs/load-default-theme spacemacs--fallback-theme)
   ;; font
   (spacemacs|do-after-display-system-init
    ;; If you are thinking to remove this call to `message', think twice. You'll
@@ -211,7 +210,8 @@ defer call using `spacemacs-post-user-config-hook'."
        (with-current-buffer "*scratch*"
          (funcall dotspacemacs-scratch-mode)))
      (when spacemacs--delayed-user-theme
-       (spacemacs/load-theme spacemacs--delayed-user-theme))
+       (spacemacs/load-theme spacemacs--delayed-user-theme
+                             spacemacs--fallback-theme t))
      (configuration-layer/display-summary emacs-start-time)
      (spacemacs-buffer//startup-hook)
      (spacemacs/check-for-new-version nil spacemacs-version-check-interval)
